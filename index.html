@@ -1,0 +1,178 @@
+<!DOCTYPE html">
+<html lang="pt-br">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/>
+  <title>Prestador de Serviço</title>
+  <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+</head>
+<body>
+  <nav class="amber accent-3" role="navigation">
+    <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo"><img src="soc.png" width="150" height="50"></a>
+    </div>
+  </nav>
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <h1 class="header center amber-text text-accent-3">Prestador de Serviço</h1>
+      <div class="row center">
+        <div class="center-fixed">	
+			<form id="frmCadastro">
+				<label for="txtNome">Nome</label><br>
+				<input type="text" name="Nome" id="txtNome" placeholder="Nome"><br>
+				
+				<label for="txtRazaoSocial">Razão Social</label><br>
+				<input type="text" name="Razao" id="txtRazaoSocial" placeholder="Razão Social"><br>
+				
+				<label for="txtTipoPessoa">Tipo de Pessoa</label><br>
+				<div class="input-field col s12">
+				<select  class="browser-default" id="txtTipoPessoa" name="Tipo">
+					<option value="CPF">CPF</option>
+					<option value="CNPJ">CNPJ</option>
+				</select>
+				</div><br>
+
+				<label for="txtCEP">CEP</label><br>
+				<input type="text" name="CEP" id="txtCEP" placeholder="CEP (Apenas Números)"><br>
+				
+				<label for="txtEndereco">Endereço</label><br>
+				<input type="text" name="Endereco" id="txtEndereco" placeholder="Endereço"><br>
+				
+				<label for="txtNumero">Número</label><br>
+				<input type="text" name="Numero" id="txtNumero" placeholder="Número"><br>
+				
+				<label for="txtBairro">Bairro</label><br>
+				<input type="text" name="Bairro" id="txtBairro" placeholder="Bairro"><br>
+				
+				<label for="txtCidade">Cidade</label><br>
+				<input type="text" name="Cidade" id="txtCidade" placeholder="Cidade"><br>
+				
+				<label for="txtEstado">Estado</label><br>
+				<input type="text" name="Estado" id="txtEstado" placeholder="Estado"><br>
+				
+				<label for="txtEmail">E-mail</label><br>
+				<input type="text" name="Email" id="txtEmail" placeholder="E-mail"><br>
+				
+				<input class="btn-large waves-effect waves-light amber accent-3" type="submit" name="" id="btnCadastrarSalvar" value="Cadastrar">
+			</form>
+		</div>
+		</div>
+      
+		<br><br>
+		
+		<table>
+			<caption><h2 class="amber-text text-accent-3">Tabela</h2></caption>
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th>Razão Social</th>
+					<th>Tipo de Pessoa</th>
+					<th>CEP</th>
+					<th>Endereço</th>
+					<th>Número</th>
+					<th>Bairro</th>
+					<th>Cidade</th>
+					<th>Estado</th>
+					<th>E-mail</th>
+				</tr>
+			</thead>
+			<tbody id="tbodyResultados"></tbody>
+			<tfoot></tfoot>
+		</table>
+    </div>
+  </div>
+
+  
+  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+  <script src="js/materialize.js"></script>
+  <script src="js/funcoes.js"></script>
+  
+  <script type="text/javascript">
+		  
+		$("#frmCadastro").validate({
+       rules : {
+             Nome:{
+                    required:true,
+                    minlength:15
+             },
+			 Razao:{
+					required:true,
+					minlength:15
+			 },
+			 CEP:{
+					required:true,
+					minlength:7
+			 },
+			 Endereco:{
+					required:true
+			 },
+			 Numero:{
+					required:true
+			 },
+			 Bairro:{
+			 		required:true
+			 },
+			 Cidade:{
+			 		required:true
+			 },
+			 Estado:{
+			 		required:true
+			 },
+			 Email:{
+			 		required:true,
+					email:true
+			 }
+       },
+       messages:{
+             Nome:{
+                    required:"Por favor, informe seu nome",
+                    minlength:"O nome deve ter pelo menos 15 caracteres"
+             },
+			 Razao:{
+					required:"Por favor, informe a Razão Social",
+					minlength:"A Razão Social deve ter pelo menos 15 caracteres"
+			},
+			CEP:{
+					required:"Por favor, informe o CEP",
+					minlength:"O CEP deve ter apenas números e 8 caracteres"
+			},
+			Endereco:{
+					required:"Por favor, informe o Endereço"
+			},
+			Numero:{
+					required:"Por favor, informe o Número"
+			},
+			Bairro:{
+					required:"Por favor, informe o Bairro"
+			},
+			Cidade:{
+					required:"Por favor, informe a Cidade"
+			},
+			Estado:{
+					required:"Por favor, informe o Estado"
+			},
+			Email:{
+					required:"Por favor, informe o E-mail",
+					email:"Por favor, informe um E-mail válido"
+			}
+	       }	
+		}); 
+		
+		$("#txtCEP").focusout(function(){
+			$.ajax({
+				url: 'https://viacep.com.br/ws/'+$(this).val()+'/json/unicode/',
+				dataType: 'json',
+				success: function(resposta){
+					$("#txtEndereco").val(resposta.logradouro);
+					$("#txtBairro").val(resposta.bairro);
+					$("#txtCidade").val(resposta.localidade);
+					$("#txtEstado").val(resposta.uf);
+				}
+			});
+		});
+		
+		</script>
+  
+  </body>
+</html>
