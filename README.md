@@ -28,11 +28,11 @@ Todos os dados são armazenados no `localStorage` do navegador, garantindo que p
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/LucasMelquiades/AGE-Formulario-com-CRUD.git
+   git clone https://github.com/LucasMelquiades/Formulario-utilizando-CRUD-e-Localstorage.git
 
 2. Clone o repositório:
    ```bash
-   cd AGE-Formulario-com-CRUD
+   cd Formulario-utilizando-CRUD-e-Localstorage
 
 3. Abra o arquivo `index.html` no navegador:
  - Clique duas vezes no arquivo, ou use um servidor local como o Live Server (VSCode) para melhor experiência
