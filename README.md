@@ -1,4 +1,4 @@
-# AGE - Formulário com CRUD - Teste Técnico SOC
+# Formulário com CRUD - Teste Técnico SOC
 
 Este projeto foi desenvolvido como parte de um teste técnico para a empresa **SOC**. O desafio consistia em criar um formulário simples utilizando a biblioteca **Materialize CSS** e implementar as funcionalidades básicas de **CRUD** (Create, Read, Update, Delete), utilizando **JavaScript** puro com persistência de dados via `localStorage`.
 
@@ -16,6 +16,7 @@ Todos os dados são armazenados no `localStorage` do navegador, garantindo que p
 - ✅ Exclusão de registros
 - ✅ Armazenamento local usando `localStorage`
 - ✅ Estilização com Materialize CSS
+- ✅ Consumo de API `Via CEP` para localizar endereço a partir do preenchimento do CEP
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -24,6 +25,7 @@ Todos os dados são armazenados no `localStorage` do navegador, garantindo que p
 - JavaScript (ES6)
 - `localStorage` para persistência
 - Organização de Tabelas com [DataTables](https://datatables.net/)
+- Pesquisa de CEP e preenchimento automatico de endereço utilizando [Via CEP](https://viacep.com.br/)
 
 ## 💻 Como Executar o Projeto
 
@@ -49,6 +51,8 @@ Todos os dados são armazenados no `localStorage` do navegador, garantindo que p
 - Armazenamento local com `localStorage`
 
 - Uso do framework CSS Materialize para layout e estilo
+
+- Preenchimento automatizado de endereço a partir do CEP 
 
 ## 👨‍💻 Autor
 
