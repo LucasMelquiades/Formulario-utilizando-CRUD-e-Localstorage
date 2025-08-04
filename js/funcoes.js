@@ -1,7 +1,6 @@
-window.onload=function(){
-	listar();
-	document.getElementById('frmCadastro').addEventListener('submit', adicionarOuAlterar);
-	document.getElementById('frmCadastro').addEventListener('submit', listar);
+window.onload = function(){
+  listar();
+  document.getElementById('frmCadastro').addEventListener('submit', adicionarOuAlterar);
 }
 
 var idAlterar = null;
@@ -84,6 +83,7 @@ function adicionar(p){
 	localStorage.setItem('value', JSON.stringify(pessoas));	
 	//Reseta os campos do formulario
 	document.getElementById('frmCadastro').reset();	
+	listar();
 }
 
 function alterar(p){
