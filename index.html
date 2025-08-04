@@ -7,6 +7,8 @@
   <link href="css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
   <link href="css/normalize.css" type="text/css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 </head>
 <body>
   <nav class="amber accent-3" role="navigation">
@@ -33,6 +35,9 @@
 				</select>
 				</div><br>
 
+				<label for="txtEmail">E-mail:</label><br>
+				<input type="text" name="Email" id="txtEmail" placeholder="E-mail"><br>
+
 				<label for="txtCEP">CEP:</label><br>
 				<input type="text" name="CEP" id="txtCEP" placeholder="CEP (Digite Apenas Números)"><br>
 				
@@ -51,8 +56,7 @@
 				<label for="txtEstado">Estado:</label><br>
 				<input type="text" name="Estado" id="txtEstado" placeholder="Estado"><br>
 				
-				<label for="txtEmail">E-mail:</label><br>
-				<input type="text" name="Email" id="txtEmail" placeholder="E-mail"><br>
+				
 				
 				<input class="btn-large waves-effect waves-light amber accent-3" type="submit" name="" id="btnCadastrarSalvar" value="Cadastrar">
 			</form>
@@ -60,36 +64,67 @@
 		</div>
       
 		<br><br>
-		
-		<table>
-			<caption><h2 class="amber-text text-accent-3">Tabela</h2></caption>
-			<thead>
-				<tr>
-					<th>Nome</th>
-					<th>Razão Social</th>
-					<th>Tipo de Pessoa</th>
-					<th>CEP</th>
-					<th>Endereço</th>
-					<th>Número</th>
-					<th>Bairro</th>
-					<th>Cidade</th>
-					<th>Estado</th>
-					<th>E-mail</th>
-				</tr>
-			</thead>
-			<tbody id="tbodyResultados"></tbody>
-			<tfoot></tfoot>
-		</table>
+		<div class="row center">
+			<table id="minhaTabela">
+				<caption><h2 class="amber-text text-accent-3">Tabela</h2></caption>
+				<thead>
+					<tr>
+						<th>Nome</th>
+						<th>Razão Social</th>
+						<th>Tipo de Pessoa</th>
+						<th>E-mail</th>
+						<th>CEP</th>
+						<th>Endereço</th>
+						<th>Número</th>
+						<th>Bairro</th>
+						<th>Cidade</th>
+						<th>Estado</th>
+						<th>Ações</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody id="tbodyResultados"></tbody>
+				<tfoot></tfoot>
+			</table>
+		</div>
     </div>
   </div>
 
   
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
   <script src="js/materialize.js"></script>
   <script src="js/funcoes.js"></script>
   
   <script type="text/javascript">
+
+	$(document).ready(function() {
+		$('#minhaTabela').DataTable({
+			responsive: true,
+			language: {
+			url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/pt-BR.json'
+			}
+		});
+	});
+
+
+
+
+	document.getElementById("txtTipoPessoa").addEventListener("change", function(){
+		const razaoSocialLabel = document.querySelector("label[for='txtRazaoSocial']");
+		const razaoSocialInput = document.getElementById("txtRazaoSocial");
+
+		if (this.value === "CNPJ") {
+			razaoSocialLabel.style.display = "block";
+			razaoSocialInput.style.display = "block";
+		} else {
+			razaoSocialLabel.style.display = "none";
+			razaoSocialInput.style.display = "none";
+			razaoSocialInput.value = ""; // Limpa o campo se ocultar
+		}
+	});
 		  
 		$("#frmCadastro").validate({
        rules : {
@@ -100,6 +135,10 @@
 			 Razao:{
 					required:true,
 					minlength:15
+			 },
+			 Email:{
+			 		required:true,
+					email:true
 			 },
 			 CEP:{
 					required:true,
@@ -119,10 +158,6 @@
 			 },
 			 Estado:{
 			 		required:true
-			 },
-			 Email:{
-			 		required:true,
-					email:true
 			 }
        },
        messages:{
@@ -133,6 +168,10 @@
 			 Razao:{
 					required:"Por favor, informe a Razão Social",
 					minlength:"A Razão Social deve ter pelo menos 15 caracteres"
+			},
+			Email:{
+					required:"Por favor, informe o E-mail",
+					email:"Por favor, informe um E-mail válido"
 			},
 			CEP:{
 					required:"Por favor, informe o CEP",
@@ -152,26 +191,37 @@
 			},
 			Estado:{
 					required:"Por favor, informe o Estado"
-			},
-			Email:{
-					required:"Por favor, informe o E-mail",
-					email:"Por favor, informe um E-mail válido"
 			}
 	       }	
 		}); 
 		
-		$("#txtCEP").focusout(function(){
-			$.ajax({
-				url: 'https://viacep.com.br/ws/'+$(this).val()+'/json/unicode/',
-				dataType: 'json',
-				success: function(resposta){
-					$("#txtEndereco").val(resposta.logradouro);
-					$("#txtBairro").val(resposta.bairro);
-					$("#txtCidade").val(resposta.localidade);
-					$("#txtEstado").val(resposta.uf);
-				}
+			$("#txtCEP").focusout(function(){
+				$.ajax({
+					url: 'https://viacep.com.br/ws/'+$(this).val()+'/json/',
+					dataType: 'json',
+					success: function(resposta){
+					if (!("erro" in resposta)) {
+						$("#txtEndereco").val(resposta.logradouro);
+						$("#txtBairro").val(resposta.bairro);
+						$("#txtCidade").val(resposta.localidade);
+						$("#txtEstado").val(resposta.uf);
+
+						// Garante que o campo Número fique ativo para edição
+						$("#txtNumero").prop("disabled", false).prop("readonly", false).val("");
+
+						// Coloca o foco direto no campo Número para o usuário continuar
+						$("#txtNumero").focus();
+					} else {
+						alert("CEP não encontrado.");
+					}
+					},
+					error: function(){
+					alert("Erro ao consultar o CEP. Verifique sua conexão.");
+					}
+				});
 			});
-		});
+
+
 		
 		</script>
   
