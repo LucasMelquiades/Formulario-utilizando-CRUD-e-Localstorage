@@ -23,6 +23,7 @@ Todos os dados são armazenados no `localStorage` do navegador, garantindo que p
 - CSS3 (com [Materialize CSS](https://materializecss.com/))
 - JavaScript (ES6)
 - `localStorage` para persistência
+- Organização de Tabelas com [DataTables](https://datatables.net/)
 
 ## 💻 Como Executar o Projeto
 
